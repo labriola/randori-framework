@@ -17,22 +17,19 @@
  * @author Michael Labriola <labriola@digitalprimates.net>
  */
 package randori.dom {
-	import randori.data.HashMap;
-	import randori.styles.StyleExtensionManager;
-	import randori.styles.StyleExtensionMapEntry;
-	import randori.webkit.html.HTMLElement;
+import randori.data.HashMap;
+import randori.styles.StyleExtensionMapEntry;
+import randori.webkit.html.HTMLElement;
 
-	public class ElementDescriptorFactory {
-		private var styleExtensionManager:StyleExtensionManager;
-
+public class ElementDescriptorFactory {
 		public function describeElement(element:HTMLElement, possibleExtensions:HashMap ):ElementDescriptor {
 			//This is purely an efficiency gain. By making a merged map for this one element, we stop everyone from cycling through 
 			//every class on an element to pull out their own piece of data
-			var entry:StyleExtensionMapEntry = possibleExtensions.get(element);
+			var entry:StyleExtensionMapEntry; // = possibleExtensions.get(element);
 			var descriptor:ElementDescriptor = new ElementDescriptor (
-					element.getAttribute("data-context"),
-					element.hasAttribute("data-mediator") ? element.getAttribute("data-mediator") : element.getAttribute("data-behavior"),
-					element.getAttribute("data-fragment"),
+					element.getAttribute( "data-context" ),
+					element.hasAttribute( "data-mediator" ) ? element.getAttribute("data-mediator") : element.getAttribute("data-behavior"),
+					element.getAttribute( "data-fragment" ),
 					element.getAttribute( "data-formatter" ),
 					element.getAttribute( "data-validator" )
 			);
@@ -63,8 +60,7 @@ package randori.dom {
 			return descriptor;
 		}
 		
-		public function ElementDescriptorFactory( styleExtensionManager:StyleExtensionManager ) {
-			this.styleExtensionManager = styleExtensionManager;
+		public function ElementDescriptorFactory() {
 		}
 	}
 }

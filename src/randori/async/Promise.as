@@ -17,9 +17,9 @@
  * @author Michael Labriola <labriola@digitalprimates.net>
  */
 package randori.async {
-	import randori.webkit.page.Window;
+import randori.webkit.page.Window;
 
-	public class Promise {
+public class Promise {
 		public static const PENDING:int = 0;
 		public static const REJECTED:int = 1;
 		public static const FULLFILLED:int = 2;
@@ -50,6 +50,10 @@ package randori.async {
 			
 			//3.2.5
 			var thenContract:ThenContract = new ThenContract(onFulfilled, onRejected, promise);
+			if ( !thenContracts ) {
+				thenContracts = [];
+			}
+
 			thenContracts.push( thenContract );
 			
 			var that:Promise = this;
@@ -57,12 +61,12 @@ package randori.async {
 			if (state == FULLFILLED) {
 				//3.2.4
 				Window.setTimeout( function():void {
-					that.fullfill(value);
+					that.fullfill(that.value);
 				}, 1);
 			} else if (state == REJECTED) {
 				//3.2.4
 				Window.setTimeout( function():void {
-					that.internalReject(reason);
+					that.internalReject(that.reason);
 				}, 1);
 			}
 			
@@ -87,7 +91,7 @@ package randori.async {
 			state = FULLFILLED;
 			
 			//3.2.2.2
-			while (thenContracts.length > 0) {
+			while (thenContracts && thenContracts.length > 0) {
 				var thenContract:ThenContract = thenContracts.shift();
 				
 				if (thenContract.fullfilledHandler != null) {
@@ -141,7 +145,7 @@ package randori.async {
 			state = REJECTED;
 			
 			//3.2.3.2
-			while (thenContracts.length > 0) {
+			while (thenContracts && thenContracts.length > 0) {
 				var thenContract:ThenContract = thenContracts.shift();
 				
 				if (thenContract.rejectedHandler != null) {
@@ -232,11 +236,14 @@ package randori.async {
             return this;
         }
 
+	    private static var counter:int = 0;
         public function Promise() {
-			this.thenContracts = new Array();
+			//Window.console.log("Promise created " + counter);
+			//counter++;
 		}
 	}
 }
+
 import randori.async.Promise;
 
 [JavaScript(export="false",name="Object",mode="json")]

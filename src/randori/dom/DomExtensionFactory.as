@@ -45,7 +45,7 @@ public class DomExtensionFactory {
 				 * consider **/
 				behavior = externalBehaviorFactory.createExternalBehavior(element, behaviorClassName, resolution.type);
 			} else {
-				behavior = classBuilder.buildClass(behaviorClassName) as AbstractBehavior;
+				behavior = classBuilder.buildDependencyByName(behaviorClassName) as AbstractBehavior;
 				behavior.provideDecoratedElement(element);
 			}
 
@@ -57,8 +57,8 @@ public class DomExtensionFactory {
 		}
 
 		public function buildChildClassBuilder(classBuilder:InjectionClassBuilder, element:HTMLElement, contextClassName:String):InjectionClassBuilder {
-			var module:GuiceModule = classBuilder.buildContext(contextClassName) as GuiceModule;
-			var injector:ChildInjector = classBuilder.buildClass("guice.ChildInjector") as ChildInjector;
+			var module:GuiceModule = classBuilder.buildContextByName(contextClassName) as GuiceModule;
+			var injector:ChildInjector = classBuilder.buildDependencyByName("guice.ChildInjector") as ChildInjector;
 
 			//This is a problem, refactor me
 			var guiceJs:GuiceJs = new GuiceJs( null );

@@ -64,7 +64,7 @@ public class DomWalker {
 				//change the class builder for everything under this point in the DOM
 				classBuilder = domExtensionFactory.buildChildClassBuilder(classBuilder, element, elementDescriptor.context);
 				//change the domWalker for everything under this point in the DOM
-				domWalker = classBuilder.buildClass("randori.dom.DomWalker") as DomWalker;
+				domWalker = classBuilder.buildDependencyByName("randori.dom.DomWalker") as DomWalker;
 			}
 
 			if (elementDescriptor.behavior != null) {
@@ -87,7 +87,7 @@ public class DomWalker {
 				//build a context for this behavior IF it turns out that this particular element defines one
 				domExtensionFactory.buildNewContent(element, elementDescriptor.fragment);
 				//change the domWalker for everything under this point in the DOM
-				domWalker = classBuilder.buildClass("randori.dom.DomWalker") as DomWalker;
+				domWalker = classBuilder.buildDependencyByName("randori.dom.DomWalker") as DomWalker;
 			}
 
 			domWalker.walkChildren(element, currentBehavior);
